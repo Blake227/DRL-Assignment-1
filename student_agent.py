@@ -17,7 +17,7 @@ class QLearningAgent():
                 self.q_table = pickle.load(f)
                 print('open q_table.pkl')
         except:
-            pass
+            raise FileNotFoundError
 
     def get_state(self, obs):
         (taxi_row, taxi_col, 
@@ -90,8 +90,7 @@ def get_action(obs):
 
     # return random.choice([0, 1, 2, 3, 4, 5]) # Choose a random action
     # You can submit this random agent to evaluate the performance of a purely random strategy.
-    # return agent.get_action(obs)
-    return
+    return agent.get_action(obs)
 
 
 
