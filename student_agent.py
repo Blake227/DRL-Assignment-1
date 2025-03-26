@@ -15,6 +15,7 @@ class QLearningAgent():
         try:
             with open("q_table.pkl", "rb") as f:
                 self.q_table = pickle.load(f)
+                print('open q_table.pkl')
         except:
             pass
 

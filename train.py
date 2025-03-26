@@ -1,23 +1,21 @@
 import gym
 import numpy as np
-from student_agent import QLearningAgent
+from student_agent import agent
 import pickle
 from simple_custom_taxi_env import SimpleTaxiEnv
+from tqdm import tqdm
 
 def train_agent(episodes=10000):
     env = SimpleTaxiEnv(grid_size=5, fuel_limit=5000)
-    agent = QLearningAgent(episodes=episodes)
 
-
-    for episode in range(episodes):
+    for episode in tqdm(range(episodes)):
         obs, _ = env.reset()
         done = False
         total_reward = 0
         
         while not done:
             action = agent.get_action(obs)
-            next_obs, reward, done, truncated, _ = env.step(action)
-            done = done or truncated
+            next_obs, reward, done, _ = env.step(action)
             agent.update_q_table(obs, action, reward, next_obs, done)
             obs = next_obs
             total_reward += reward
