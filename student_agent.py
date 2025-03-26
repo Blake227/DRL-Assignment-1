@@ -13,11 +13,22 @@ class QLearningAgent():
         self.epsilon = epsilon
 
         try:
+          data = np.load("q_table.npz", allow_pickle=True)  # 必須允許 pickle 來處理 object 類型
+          keys = data['keys']
+          values = data['values']
+          
+          # 確保 keys 是 tuple
+          self.q_table = {tuple(k): v for k, v in zip(keys, values)}
+          
+          print('Successfully loaded q_table.npz')
+          '''
             with open("q_table.pkl", "rb") as f:
                 self.q_table = pickle.load(f)
-                print('open q_table.pkl')
+                print('open q_table.pkl')'
+          '''
         except:
-            raise FileNotFoundError
+          raise FileNotFoundError
+            
 
     def get_state(self, obs):
         (taxi_row, taxi_col, 
@@ -72,8 +83,15 @@ class QLearningAgent():
         self.q_table[current_state][action] += self.alpha * td_error
 
     def save_q_table(self):
+      keys = list(self.q_table.keys())  # 確保 keys 是 tuple
+      values = list(self.q_table.values())
+      
+      # 存成 np.array，避免 keys 變成 numpy.ndarray
+      np.savez("q_table.npz", keys=np.array(keys, dtype=object), values=np.array(values))
+      '''
         with open("q_table.pkl", "wb") as f:
-            pickle.dump(self.q_table, f)
+            pickle.dump(self.q_table, f)'
+      '''
 
 
 agent = QLearningAgent()
